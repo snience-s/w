@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ae" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCIENCE | 3D Cinematic Experience</title>
+    <script src="https://tailwindcss.com"></script>
+    <!-- قراءة مكتبة الـ 3D محلياً لكسر حظر الأمان -->
+    <script src="three.js"></script>
+    <style>
+        body { background-color: #030f26; color: #ffffff; font-family: system-ui, sans-serif; overflow: hidden; margin: 0; }
+        .gold-text { color: #d4af37; }
+        #canvas-container { position: absolute; top: 0; left: 0; width: 100%; height: 100vh; z-index: 1; }
+    </style>
+</head>
+<body class="relative min-h-screen">
+
+    <div id="canvas-container"></div>
+
+    <section class="relative w-full h-screen flex flex-col justify-between items-center text-center px-4 z-10 pointer-events-none select-none py-12">
+        <div class="mt-4"><p class="text-xs tracking-[0.5em] text-gray-400 uppercase">SCIENCE</p></div>
+        <div class="max-w-4xl">
+            <h1 class="text-6xl md:text-8xl font-black tracking-[0.3em] mb-4 uppercase drop-shadow-2xl">SCIENCE</h1>
+            <p class="text-xs md:text-sm tracking-[0.4em] text-gray-400 uppercase mb-6">CONFERENCE ORGANIZING & EVENT MANAGEMENT</p>
+            <div class="text-sm gold-text tracking-widest max-w-md mx-auto italic border-t border-b border-white/10 py-2">"WE PLAN WITH PURPOSE, WE DELIVER EXCELLENCE."</div>
+        </div>
+        <div class="flex flex-col items-center opacity-40">
+            <span class="text-[10px] tracking-[0.3em] mb-2">حرك الماوس للتفاعل ثلاثي الأبعاد</span>
+            <svg class="w-4 h-4 text-white animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7-7-7"></path></svg>
+        </div>
+    </section>
+
+    <script>
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x030f26, 0.05);
+        
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 4;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        const geometry = new THREE.TorusKnotGeometry(1.0, 0.25, 150, 16);
+        const material = new THREE.MeshPhongMaterial({ 
+            color: 0x1e40af, 
+            shininess: 100, 
+            wireframe: true 
+        });
+        const mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0x00f0ff, 2);
+        dirLight.position.set(5, 5, 5);
+        scene.add(dirLight);
+
+        let mouseX = 0, mouseY = 0;
+        window.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX - window.innerWidth / 2) * 0.002;
+            mouseY = (e.clientY - window.innerHeight / 2) * 0.002;
+        });
+
+        const animate = () => {
+            requestAnimationFrame(animate);
+            mesh.rotation.y += 0.005;
+            mesh.rotation.x += 0.002;
+            mesh.rotation.y += (mouseX - mesh.rotation.y) * 0.05;
+            mesh.rotation.x += (mouseY - mesh.rotation.x) * 0.05;
+            renderer.render(scene, camera);
+        };
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

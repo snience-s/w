@@ -1,0 +1,15 @@
+/about /about.html 301
+/services /services.html 301
+/our-work /work.html 301
+/case-studies /case-studies.html 301
+/science-experience /experience.html 301
+/team /team.html 301
+/contact /contact.html 301
+/social /social.html 301
+
+/about/* /about.html 200
+/services/* /services.html 200
+/our-work/* /work.html 200
+/science-experience/* /experience.html 200
+/team/* /team.html 200
+/social/* /social.html 200
