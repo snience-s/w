@@ -462,7 +462,14 @@ export const rashaProfile = {
 
 export const contactInfo = [
   { label: 'Email', value: 'science@elmawy.com', href: 'mailto:science@elmawy.com' },
-  { label: 'Phone', value: '+20 109 582 8282 / +201020180180', href: 'tel:+201095828282' },
+  {
+    label: 'Phone',
+    value: '+20 109 582 8282 / +20 102 018 0180',
+    phones: [
+      { value: '+20 109 582 8282', href: 'tel:+201095828282' },
+      { value: '+20 102 018 0180', href: 'tel:+201020180180' },
+    ],
+  },
   { label: 'Facebook', value: 'facebook.com/science.events', href: 'https://www.facebook.com/profile.php?id=61593490812620' },
   { label: 'Instagram', value: '@science.eventseg', href: 'https://www.instagram.com/science.eventseg/' },
   { label: 'WhatsApp', value: '+20 109 582 8282', href: 'https://wa.me/201095828282' },

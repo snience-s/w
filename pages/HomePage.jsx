@@ -2,6 +2,7 @@
 import { Link } from 'react-router'
 import ScienceWordmark from '../components/ScienceWordmark'
 import LazyBackground from '../components/LazyBackground'
+import PhoneLinks from '../components/PhoneLinks'
 import heroVideo from '../assets/hero/hero.mp4'
 import {
   aboutPillars,
@@ -202,18 +203,18 @@ export default function HomePage() {
           {contactInfo.map((item) => (
             <div className="contact-row" key={item.label}>
               <span>{t(item.label)}</span>
-              {item.href ? (
+              {item.phones ? (
+                <div className="contact-link">
+                  <strong><PhoneLinks phones={item.phones} /></strong>
+                </div>
+              ) : item.href ? (
                 <a
                   className="contact-link"
                   href={item.href}
                   target={item.href.startsWith('https://') ? '_blank' : undefined}
                   rel={item.href.startsWith('https://') ? 'noreferrer' : undefined}
                 >
-                  <strong>
-                    {['Phone', 'WhatsApp'].includes(item.label) ? (
-                      <bdi dir="ltr">{item.value}</bdi>
-                    ) : item.value}
-                  </strong>
+                  <strong>{item.label === 'WhatsApp' ? <bdi dir="ltr">{item.value}</bdi> : item.value}</strong>
                 </a>
               ) : (
                 <strong>{item.value}</strong>

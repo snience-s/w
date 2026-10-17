@@ -1,5 +1,6 @@
 import { contactInfo } from '../data/siteData'
 import { services } from '../data/siteData'
+import PhoneLinks from '../components/PhoneLinks'
 import { useLanguage } from '../i18n'
 
 export default function ContactPage() {
@@ -39,7 +40,12 @@ export default function ContactPage() {
       </div>
 
       <div className="contact-grid">
-        {contactInfo.map((item) => (
+        {contactInfo.map((item) => item.phones ? (
+          <div key={item.label} className="page-card page-card--contact">
+            <span>{t(item.label)}</span>
+            <p><PhoneLinks phones={item.phones} /></p>
+          </div>
+        ) : (
           <a
             key={item.label}
             className="page-card page-card--contact"
@@ -48,11 +54,7 @@ export default function ContactPage() {
             rel={item.href.startsWith('https://') ? 'noreferrer' : undefined}
           >
             <span>{t(item.label)}</span>
-            <p>
-              {['Phone', 'WhatsApp'].includes(item.label) ? (
-                <bdi dir="ltr">{item.value}</bdi>
-              ) : item.value}
-            </p>
+            <p>{item.label === 'WhatsApp' ? <bdi dir="ltr">{item.value}</bdi> : item.value}</p>
           </a>
         ))}
       </div>

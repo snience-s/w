@@ -1,6 +1,20 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Route, Routes, useLocation } from 'react-router'
-import { ayaProfile, contactInfo, hayaProfile, jowanaProfile, meiraProfile, navItems, rashaProfile } from './data/siteData'
+import {
+  aboutPillars,
+  ayaProfile,
+  contactInfo,
+  experienceSteps,
+  founderProfile,
+  hayaProfile,
+  jowanaProfile,
+  meiraProfile,
+  navItems,
+  projectPillars,
+  rashaProfile,
+  services,
+  teamProfiles,
+} from './data/siteData'
 import { useLanguage } from './i18n'
 import ScienceWordmark from './components/ScienceWordmark'
 
@@ -22,6 +36,72 @@ const TeamRolePage = lazy(() => import('./pages/TeamRolePage'))
 const WorkPage = lazy(() => import('./pages/WorkPage'))
 const HomePage = lazy(() => import('./pages/HomePage'))
 
+function getPageMetadata(pathname, t) {
+  const staticPages = {
+    '/': ['SCIENCE EVENT MANAGEMENT', 'SCIENCE Event Management plans and delivers medical conferences, scientific events, and exhibitions.'],
+    '/about': ['About Us', 'Learn about SCIENCE Event Management, our mission, vision, and approach to medical conferences and events.'],
+    '/about.html': ['About Us', 'Learn about SCIENCE Event Management, our mission, vision, and approach to medical conferences and events.'],
+    '/services': ['Services', 'Explore medical conference planning, event production, registration, branding, and digital event services.'],
+    '/services.html': ['Services', 'Explore medical conference planning, event production, registration, branding, and digital event services.'],
+    '/work.html': ['Our Events', 'Browse completed medical conferences and upcoming scientific events delivered by SCIENCE.'],
+    '/our-work': ['Our Events', 'Browse completed medical conferences and upcoming scientific events delivered by SCIENCE.'],
+    '/case-studies': ['Case Studies', 'Read case studies from completed medical conferences and scientific events.'],
+    '/case-studies.html': ['Case Studies', 'Read case studies from completed medical conferences and scientific events.'],
+    '/experience': ['Experience', 'Explore the SCIENCE event experience, from arrival and registration through the final moments.'],
+    '/experience.html': ['Experience', 'Explore the SCIENCE event experience, from arrival and registration through the final moments.'],
+    '/science-experience': ['Experience', 'Explore the SCIENCE event experience, from arrival and registration through the final moments.'],
+    '/team': ['Our Team', 'Meet the SCIENCE team and learn about the people behind our medical events.'],
+    '/team.html': ['Our Team', 'Meet the SCIENCE team and learn about the people behind our medical events.'],
+    '/contact': ['Contact Us', 'Contact SCIENCE Event Management to discuss your next medical conference or event.'],
+    '/contact.html': ['Contact Us', 'Contact SCIENCE Event Management to discuss your next medical conference or event.'],
+    '/social': ['Connect Online', 'Connect with SCIENCE Event Management across our social channels.'],
+    '/social.html': ['Connect Online', 'Connect with SCIENCE Event Management across our social channels.'],
+  }
+
+  let [title, description] = staticPages[pathname] ?? ['Page not found', 'Contact SCIENCE Event Management.']
+  const projectMatch = pathname.match(/^\/our-work\/([^/]+)(\/gallery)?$/)
+  const aboutMatch = pathname.match(/^\/about\/([^/]+)$/)
+  const serviceMatch = pathname.match(/^\/services\/([^/]+)$/)
+  const experienceMatch = pathname.match(/^\/science-experience\/([^/]+)$/)
+  const teamMatch = pathname.match(/^\/team\/([^/]+)$/)
+  const project = projectMatch && projectPillars.find((item) => item.slug === projectMatch[1])
+  const pillar = aboutMatch && aboutPillars.find((item) => item.slug === aboutMatch[1])
+  const service = serviceMatch && services.find((item) => item.slug === serviceMatch[1])
+  const step = experienceMatch && experienceSteps.find((item) => item.slug === experienceMatch[1])
+  const profile = teamMatch && [
+    founderProfile,
+    ayaProfile,
+    jowanaProfile,
+    hayaProfile,
+    meiraProfile,
+    rashaProfile,
+    ...teamProfiles,
+  ].find((item) => item.slug === teamMatch[1])
+
+  if (project) {
+    const projectTitle = t(project.eventTitle ?? project.name)
+    title = projectMatch[2] ? `${t('Event photo gallery')}: ${projectTitle}` : projectTitle
+    description = `${t(projectMatch[2] ? 'Browse the photo gallery for' : 'Explore information and highlights for')} ${projectTitle}.`
+  } else if (pillar) {
+    title = t(pillar.title)
+    description = t(pillar.teaser)
+  } else if (service) {
+    title = t(service.title)
+    description = t(service.description)
+  } else if (step) {
+    title = t(step.label)
+    description = t(step.description)
+  } else if (profile) {
+    title = t(profile.name ?? profile.label)
+    description = t(profile.statement ?? profile.description ?? profile.position)
+  }
+
+  return {
+    title: `${t(title)} | ${t('SCIENCE EVENT MANAGEMENT')}`,
+    description: t(description),
+  }
+}
+
 function App() {
   const cursorRef = useRef(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -32,6 +112,19 @@ function App() {
     window.scrollTo(0, 0)
     setIsMenuOpen(false)
   }, [pathname])
+
+  useEffect(() => {
+    const { title, description } = getPageMetadata(pathname, t)
+    document.title = title
+
+    let descriptionMeta = document.querySelector('meta[name="description"]')
+    if (!descriptionMeta) {
+      descriptionMeta = document.createElement('meta')
+      descriptionMeta.name = 'description'
+      document.head.append(descriptionMeta)
+    }
+    descriptionMeta.content = description
+  }, [language, pathname, t])
 
   useEffect(() => {
     const cursor = cursorRef.current

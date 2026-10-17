@@ -1,5 +1,5 @@
 import { Link, Navigate, useParams } from 'react-router'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import ministryLogo from '../assets/logo.m/s.png'
 import medicalServicesLogo from '../assets/logo.m/n.jpeg'
 import { eventGalleryPhotos, eventHighlights, eventVideos } from '../data/eventMedia'
@@ -24,52 +24,49 @@ export default function ProjectDetailPage() {
   const hasExtendedEventInfo = Boolean(project?.eventTitle)
   const galleryPhotos = project ? eventGalleryPhotos[projectSlug] ?? [] : []
 
-  const shuffledHighlights = useRef([])
-
-  if (shuffledHighlights.current.length !== highlights.length) {
+  const slides = useMemo(() => {
     const nextSlides = [...highlights]
     for (let i = nextSlides.length - 1; i > 0; i -= 1) {
       const j = Math.floor(Math.random() * (i + 1))
       ;[nextSlides[i], nextSlides[j]] = [nextSlides[j], nextSlides[i]]
     }
-    shuffledHighlights.current = nextSlides
-  }
+    return nextSlides
+  }, [highlights])
+
+  const currentSlide = activeSlide % slides.length
+  const currentGalleryPreview = galleryPhotos.length ? galleryPreviewIndex % galleryPhotos.length : 0
+  const currentVideo = videos.length ? activeVideo % videos.length : 0
 
   useEffect(() => {
-    if (shuffledHighlights.current.length <= 1) return
+    setActiveSlide(0)
+    setGalleryPreviewIndex(0)
+    setActiveVideo(0)
+    touchStartX.current = null
+  }, [projectSlug])
+
+  useEffect(() => {
+    if (slides.length <= 1) return
 
     const timer = window.setInterval(() => {
-      const currentSlides = [...shuffledHighlights.current]
-      const firstItem = currentSlides.shift()
-      currentSlides.push(firstItem)
-      shuffledHighlights.current = currentSlides
-      setActiveSlide((current) => (current + 1) % currentSlides.length)
+      setActiveSlide((current) => (current + 1) % slides.length)
       if (galleryPhotos.length > 1) {
         setGalleryPreviewIndex((current) => (current + 1) % galleryPhotos.length)
       }
     }, 4000)
 
     return () => window.clearInterval(timer)
-  }, [highlights.length, galleryPhotos.length])
+  }, [slides.length, galleryPhotos.length])
 
   if (currentIndex === -1) {
     return <Navigate to="/our-work" replace />
   }
 
   const showPreviousSlide = () => {
-    const currentSlides = [...shuffledHighlights.current]
-    const lastItem = currentSlides.pop()
-    currentSlides.unshift(lastItem)
-    shuffledHighlights.current = currentSlides
-    setActiveSlide((current) => (current - 1 + currentSlides.length) % currentSlides.length)
+    setActiveSlide((current) => (current - 1 + slides.length) % slides.length)
   }
 
   const showNextSlide = () => {
-    const currentSlides = [...shuffledHighlights.current]
-    const firstItem = currentSlides.shift()
-    currentSlides.push(firstItem)
-    shuffledHighlights.current = currentSlides
-    setActiveSlide((current) => (current + 1) % currentSlides.length)
+    setActiveSlide((current) => (current + 1) % slides.length)
   }
 
   const handleTouchStart = (event) => {
@@ -106,32 +103,32 @@ export default function ProjectDetailPage() {
           <h3>{t(project.name)}</h3>
         </div>
         {['forensic-nursing-scientific-day', 'world-diabetes-day-event'].includes(projectSlug) && (
-          <div className="project-authority-logos" aria-label="Event authorities">
-            <img src={ministryLogo} alt="Ministry of Interior emblem" loading="lazy" decoding="async" />
-            <img src={medicalServicesLogo} alt="Medical Services Sector emblem" loading="lazy" decoding="async" />
+          <div className="project-authority-logos" aria-label={t('Event authorities')}>
+            <img src={ministryLogo} alt={t('Ministry of Interior emblem')} loading="lazy" decoding="async" />
+            <img src={medicalServicesLogo} alt={t('Medical Services Sector emblem')} loading="lazy" decoding="async" />
           </div>
         )}
       </div>
 
       {hasExtendedEventInfo && (
         <div className="event-info-card event-info-card--feature event-overview-before-highlights">
-          <p className="mini-label">EVENT OVERVIEW</p>
-          <h4>{project.eventTitle}</h4>
-          {project.eventSubtitle && <p className="event-subtitle">{project.eventSubtitle}</p>}
-          {project.eventIntro && <p className="event-paragraph">{project.eventIntro}</p>}
-          {project.theme && <p className="event-theme">Theme: {project.theme}</p>}
+          <p className="mini-label">{t('EVENT OVERVIEW')}</p>
+          <h4>{t(project.eventTitle)}</h4>
+          {project.eventSubtitle && <p className="event-subtitle">{t(project.eventSubtitle)}</p>}
+          {project.eventIntro && <p className="event-paragraph">{t(project.eventIntro)}</p>}
+          {project.theme && <p className="event-theme">{t('Theme:')} {t(project.theme)}</p>}
           <div className="event-meta-grid">
-            {project.date && <div><span>Date</span><strong>{project.date}</strong></div>}
-            {project.venue && <div><span>Venue</span><strong>{project.venue}</strong></div>}
-            {project.city && <div><span>City</span><strong>{project.city}</strong></div>}
+            {project.date && <div><span>{t('Date')}</span><strong>{t(project.date)}</strong></div>}
+            {project.venue && <div><span>{t('Venue')}</span><strong>{t(project.venue)}</strong></div>}
+            {project.city && <div><span>{t('City')}</span><strong>{t(project.city)}</strong></div>}
             {(project.organizer || project.presentedBy) && (
               <div>
-                <span>{project.organizer ? 'Organizer' : 'Presented by'}</span>
-                <strong>{project.organizer ?? project.presentedBy}</strong>
+                <span>{t(project.organizer ? 'Organizer' : 'Presented by')}</span>
+                <strong>{t(project.organizer ?? project.presentedBy)}</strong>
               </div>
             )}
             {project.eventOverview?.map(({ label, value }) => (
-              <div key={label}><span>{label}</span><strong>{value}</strong></div>
+              <div key={label}><span>{t(label)}</span><strong>{t(value)}</strong></div>
             ))}
           </div>
         </div>
@@ -139,39 +136,39 @@ export default function ProjectDetailPage() {
 
       <div className="event-highlights" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
         <div className="event-highlights-header">
-          <p className="kicker">Event Highlights</p>
+          <p className="kicker">{t('Event Highlights')}</p>
           <div className="event-highlights-controls">
-            <button type="button" className="highlight-arrow" onClick={showPreviousSlide} aria-label="Previous slide">
+            <button type="button" className="highlight-arrow" onClick={showPreviousSlide} aria-label={t('Previous slide')}>
               ‹
             </button>
-            <button type="button" className="highlight-arrow" onClick={showNextSlide} aria-label="Next slide">
+            <button type="button" className="highlight-arrow" onClick={showNextSlide} aria-label={t('Next slide')}>
               ›
             </button>
-            <span className="swipe-hint">Swipe</span>
+            <span className="swipe-hint">{t('Swipe')}</span>
           </div>
         </div>
 
         <div className="highlight-viewport" aria-live="polite">
           <div
             className="highlight-track"
-            style={{ transform: `translateX(-${activeSlide * 100}%)` }}
+            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
           >
-            {shuffledHighlights.current.map((highlight, index) => (
+            {slides.map((highlight, index) => (
               <figure className="highlight-slide" key={`${highlight.src}-${highlight.caption}-${index}`}>
-                <img src={highlight.src} alt={highlight.alt} loading="lazy" decoding="async" />
-                <figcaption>{highlight.caption}</figcaption>
+                <img src={highlight.src} alt={t('Event image')} loading="lazy" decoding="async" />
+                <figcaption>{t(highlight.caption)}</figcaption>
               </figure>
             ))}
           </div>
         </div>
 
-        <div className="highlight-dots" aria-label="Highlight slides">
-          {shuffledHighlights.current.map((highlight, index) => (
+        <div className="highlight-dots" aria-label={t('Event Highlights')}>
+          {slides.map((highlight, index) => (
             <button
               key={`${highlight.src}-dot-${index}`}
               type="button"
-              className={index === activeSlide ? 'is-active' : ''}
-              aria-label={`Go to slide ${index + 1}`}
+              className={index === currentSlide ? 'is-active' : ''}
+              aria-label={`${t('Go to slide')} ${index + 1}`}
               onClick={() => setActiveSlide(index)}
             />
           ))}
@@ -181,19 +178,19 @@ export default function ProjectDetailPage() {
       {(galleryPhotos.length > 0 || videos.length > 0) && (
         <section className="event-media-overview">
           <div className="section-heading">
-            <p className="kicker">MEDIA</p>
-            <h3>Event Photos &amp; Videos</h3>
-            <p>{project.mediaDescription ?? 'Explore highlights and moments from the event through the photo and video collection.'}</p>
+            <p className="kicker">{t('MEDIA')}</p>
+            <h3>{t('Event Photos & Videos')}</h3>
+            <p>{t(project.mediaDescription ?? 'Explore highlights and moments from the event through the photo and video collection.')}</p>
           </div>
         </section>
       )}
 
       {galleryPhotos.length > 0 && (
-        <div className="event-gallery-shortcuts" aria-label="Open event photo gallery">
+        <div className="event-gallery-shortcuts" aria-label={t('Open event photo gallery')}>
           <button
             type="button"
             className="event-gallery-control"
-            aria-label="Previous gallery previews"
+            aria-label={t('Previous gallery previews')}
             onClick={() => setGalleryPreviewIndex((current) => (current - 1 + galleryPhotos.length) % galleryPhotos.length)}
           >
             ‹
@@ -201,14 +198,14 @@ export default function ProjectDetailPage() {
           <div className="event-gallery-shortcuts-window" aria-live="polite">
             <div className="event-gallery-shortcuts-track" key={galleryPreviewIndex}>
               {[0, 1].map((offset) => {
-                const photo = galleryPhotos[(galleryPreviewIndex + offset) % galleryPhotos.length]
+                const photo = galleryPhotos[(currentGalleryPreview + offset) % galleryPhotos.length]
 
                 return (
                   <Link
-                    key={`${photo.src}-${galleryPreviewIndex}`}
+                    key={`${photo.src}-${currentGalleryPreview}`}
                     className="event-gallery-shortcut"
                     to={`/our-work/${projectSlug}/gallery`}
-                    aria-label={`Open event photo gallery, image ${galleryPreviewIndex + offset + 1}`}
+                    aria-label={`${t('Open event photo gallery, image')} ${currentGalleryPreview + offset + 1}`}
                   >
                     <img src={photo.src} alt="" loading="lazy" decoding="async" />
                   </Link>
@@ -219,7 +216,7 @@ export default function ProjectDetailPage() {
           <button
             type="button"
             className="event-gallery-control"
-            aria-label="Next gallery previews"
+            aria-label={t('Next gallery previews')}
             onClick={() => setGalleryPreviewIndex((current) => (current + 1) % galleryPhotos.length)}
           >
             ›
@@ -230,14 +227,14 @@ export default function ProjectDetailPage() {
       {videos.length > 0 && (
         <section className="event-videos" aria-labelledby="event-videos-title">
           <div className="event-highlights-header">
-            <p className="kicker" id="event-videos-title">Event Videos</p>
+            <p className="kicker" id="event-videos-title">{t('Event Videos')}</p>
             {videos.length > 1 && (
               <div className="event-highlights-controls">
                 <button
                   type="button"
                   className="highlight-arrow"
                   onClick={() => setActiveVideo((current) => (current - 1 + videos.length) % videos.length)}
-                  aria-label="Previous video"
+                  aria-label={t('Previous video')}
                 >
                   ‹
                 </button>
@@ -245,7 +242,7 @@ export default function ProjectDetailPage() {
                   type="button"
                   className="highlight-arrow"
                   onClick={() => setActiveVideo((current) => (current + 1) % videos.length)}
-                  aria-label="Next video"
+                  aria-label={t('Next video')}
                 >
                   ›
                 </button>
@@ -256,11 +253,14 @@ export default function ProjectDetailPage() {
           <div className="event-video-viewport">
             <div
               className="event-video-track"
-              style={{ transform: `translateX(-${activeVideo * 100}%)` }}
+              style={{ transform: `translateX(-${currentVideo * 100}%)` }}
             >
               {videos.map((video, index) => (
                 <div className="event-video-slide" key={video.src}>
-                  <LazyEventVideo video={video} isActive={index === activeVideo} />
+                  <LazyEventVideo
+                    video={{ ...video, alt: `${t('Event video')} ${index + 1}` }}
+                    isActive={index === currentVideo}
+                  />
                 </div>
               ))}
             </div>
@@ -272,26 +272,26 @@ export default function ProjectDetailPage() {
         <div className="event-info-layout">
           {project.about?.length > 0 && (
             <div className="event-info-card">
-              <p className="mini-label">ABOUT THE EVENT</p>
+              <p className="mini-label">{t('ABOUT THE EVENT')}</p>
               {project.about.map((paragraph) => (
-                <p key={paragraph} className="event-paragraph">{paragraph}</p>
+                <p key={paragraph} className="event-paragraph">{t(paragraph)}</p>
               ))}
             </div>
           )}
 
           {project.mission && (
             <div className="event-info-card">
-              <p className="mini-label">OUR MISSION</p>
-              <p className="event-paragraph">{project.mission}</p>
+              <p className="mini-label">{t('OUR MISSION')}</p>
+              <p className="event-paragraph">{t(project.mission)}</p>
             </div>
           )}
 
           {project.story?.length > 0 && (
             <div className="event-info-card event-info-card--full">
-              <p className="mini-label">THE HEARTPRINT STORY</p>
+              <p className="mini-label">{t('THE HEARTPRINT STORY')}</p>
               <ul className="event-list">
                 {project.story.map(({ label, description }) => (
-                  <li key={label}><strong>{label}:</strong> {description}</li>
+                  <li key={label}><strong>{t(label)}:</strong> {t(description)}</li>
                 ))}
               </ul>
             </div>
@@ -299,22 +299,22 @@ export default function ProjectDetailPage() {
 
           {project.closingMessage && (
             <div className="event-info-card event-info-card--full">
-              <p className="mini-label">{project.eventSubtitle}</p>
-              <p className="event-paragraph">{project.closingMessage}</p>
+              <p className="mini-label">{t(project.eventSubtitle)}</p>
+              <p className="event-paragraph">{t(project.closingMessage)}</p>
             </div>
           )}
 
           {project.program?.length > 0 && (
             <div className="event-info-card event-info-card--full">
-              <p className="mini-label">SCIENTIFIC PROGRAM</p>
+              <p className="mini-label">{t('SCIENTIFIC PROGRAM')}</p>
               <div className="event-program-list">
                 {project.program.map((item) => (
                   <div key={`${item.time}-${item.title}`} className="event-program-item">
                     <div className="event-program-time">{item.time}</div>
                     <div className="event-program-copy">
-                      <h5>{item.title}</h5>
+                      <h5>{t(item.title)}</h5>
                       {item.speaker && item.speaker !== '-' && <p className="event-speaker">{item.speaker}</p>}
-                      {item.description && <p>{item.description}</p>}
+                      {item.description && <p>{t(item.description)}</p>}
                     </div>
                   </div>
                 ))}
@@ -324,68 +324,68 @@ export default function ProjectDetailPage() {
 
           {project.highlights?.length > 0 && (
             <div className="event-info-card">
-              <p className="mini-label">EVENT HIGHLIGHTS</p>
+              <p className="mini-label">{t('EVENT HIGHLIGHTS')}</p>
               <ul className="event-list">
-                {project.highlights.map((point) => <li key={point}>{point}</li>)}
+                {project.highlights.map((point) => <li key={point}>{t(point)}</li>)}
               </ul>
             </div>
           )}
 
           {project.scientificThemes?.length > 0 && (
             <div className="event-info-card event-info-card--full">
-              <p className="mini-label">SCIENTIFIC THEMES</p>
+              <p className="mini-label">{t('SCIENTIFIC THEMES')}</p>
               <ul className="event-list">
-                {project.scientificThemes.map((theme) => <li key={theme}>{theme}</li>)}
+                {project.scientificThemes.map((theme) => <li key={theme}>{t(theme)}</li>)}
               </ul>
-              {project.programmeNote && <p className="event-paragraph">{project.programmeNote}</p>}
+              {project.programmeNote && <p className="event-paragraph">{t(project.programmeNote)}</p>}
             </div>
           )}
 
           {project.registration && (
             <div className="event-info-card">
-              <p className="mini-label">REGISTRATION</p>
-              <p className="event-paragraph">{project.registration.title}</p>
+              <p className="mini-label">{t('REGISTRATION')}</p>
+              <p className="event-paragraph">{t(project.registration.title)}</p>
               <a href={`mailto:${project.registration.email}`}>{project.registration.email}</a>
             </div>
           )}
 
           {project.execution?.length > 0 && (
             <div className="event-info-card">
-              <p className="mini-label">EVENT MANAGEMENT & EXECUTION</p>
+              <p className="mini-label">{t('EVENT MANAGEMENT & EXECUTION')}</p>
               <ul className="event-list">
-                {project.execution.map((point) => <li key={point}>{point}</li>)}
+                {project.execution.map((point) => <li key={point}>{t(point)}</li>)}
               </ul>
             </div>
           )}
 
           {project.materials?.length > 0 && (
             <div className="event-info-card">
-              <p className="mini-label">CONFERENCE MATERIALS & GIVEAWAYS</p>
+              <p className="mini-label">{t('CONFERENCE MATERIALS & GIVEAWAYS')}</p>
               <ul className="event-list">
-                {project.materials.map((point) => <li key={point}>{point}</li>)}
+                {project.materials.map((point) => <li key={point}>{t(point)}</li>)}
               </ul>
             </div>
           )}
 
           {project.branding && (
             <div className="event-info-card">
-              <p className="mini-label">EVENT BRANDING</p>
-              <p className="event-paragraph">{project.branding}</p>
+              <p className="mini-label">{t('EVENT BRANDING')}</p>
+              <p className="event-paragraph">{t(project.branding)}</p>
             </div>
           )}
 
           {project.photography && (
             <div className="event-info-card">
-              <p className="mini-label">PHOTOGRAPHY & VIDEOGRAPHY</p>
-              <p className="event-paragraph">{project.photography}</p>
+              <p className="mini-label">{t('PHOTOGRAPHY & VIDEOGRAPHY')}</p>
+              <p className="event-paragraph">{t(project.photography)}</p>
             </div>
           )}
 
           {project.gallery?.length > 0 && (
             <div className="event-info-card event-info-card--full">
-              <p className="mini-label">EVENT GALLERY</p>
+              <p className="mini-label">{t('EVENT GALLERY')}</p>
               <ul className="event-gallery-list">
-                {project.gallery.map((item) => <li key={item}>{item}</li>)}
+                {project.gallery.map((item) => <li key={item}>{t(item)}</li>)}
               </ul>
             </div>
           )}
