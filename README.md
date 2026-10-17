@@ -29,6 +29,13 @@ npm run build
 dotnet build ScienceF.slnx
 ```
 
+`npm run build` generates the deployable multi-page site in `dist/`. The
+generated files are tracked in Git, so rebuild and include `dist/` changes
+whenever publishing source changes. Asset and page URLs are rooted at `/` for
+deployment at the domain root. The output includes Apache rewrite rules in
+`.htaccess` and static-host redirect rules in `_redirects` for clean URLs and
+detail pages.
+
 Run `npm run lint` to check the website source.
 
 ## Website pages

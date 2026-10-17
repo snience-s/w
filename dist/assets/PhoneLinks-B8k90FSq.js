@@ -1,0 +1,1 @@
+import{j as r,r as i}from"./main-DzP2LSm6.js";function a({phones:s}){return r.jsx(r.Fragment,{children:s.map((e,t)=>r.jsxs(i.Fragment,{children:[t>0&&" / ",r.jsx("a",{href:e.href,children:r.jsx("bdi",{dir:"ltr",children:e.value})})]},e.href))})}export{a as P};

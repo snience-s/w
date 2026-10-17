@@ -1,0 +1,18 @@
+Options -MultiViews
+RewriteEngine On
+
+RewriteRule ^about/?$ /about.html [R=301,L]
+RewriteRule ^services/?$ /services.html [R=301,L]
+RewriteRule ^our-work/?$ /work.html [R=301,L]
+RewriteRule ^case-studies/?$ /case-studies.html [R=301,L]
+RewriteRule ^science-experience/?$ /experience.html [R=301,L]
+RewriteRule ^team/?$ /team.html [R=301,L]
+RewriteRule ^contact/?$ /contact.html [R=301,L]
+RewriteRule ^social/?$ /social.html [R=301,L]
+
+RewriteRule ^about/.+$ /about.html [L]
+RewriteRule ^services/.+$ /services.html [L]
+RewriteRule ^our-work/.+$ /work.html [L]
+RewriteRule ^science-experience/.+$ /experience.html [L]
+RewriteRule ^team/.+$ /team.html [L]
+RewriteRule ^social/.+$ /social.html [L]
