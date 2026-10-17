@@ -1,4 +1,5 @@
 import forensicNursingCover from '../assets/aas/WhatsApp Image 2026-10-07 at 11.34.35 AM.jpeg'
+import patientSafetyCover from '../assets/pshe/b8a924f9-2922-44e0-ada6-8885a7fd1cf2.jpg'
 
 const nursingLawImages = [
   ...Object.entries(
@@ -39,11 +40,27 @@ const nursingLawVideos = Object.entries(
     poster: nursingLawSlides[index % nursingLawSlides.length]?.src ?? forensicNursingCover,
   }))
 
+const patientSafetyImages = Object.entries(
+  import.meta.glob('../assets/pshe/*.{jpeg,jpg,png,webp,avif}', { eager: true, import: 'default' }),
+)
+  .sort(([firstPath], [secondPath]) => firstPath.localeCompare(secondPath))
+  .map(([path, src]) => ({ path, src }))
+const patientSafetyVideos = Object.entries(
+  import.meta.glob('../assets/pshe/*.{mp4,webm,mov,m4v}', { eager: true, import: 'default' }),
+)
+  .sort(([firstPath], [secondPath]) => firstPath.localeCompare(secondPath))
+  .map(([path, src]) => ({ path, src, poster: patientSafetyCover }))
+
 export const eventHighlights = {
   'forensic-nursing-scientific-day': nursingLawSlides.map(({ src }, index) => ({
     src,
     alt: `Nursing Law & Forensic Science Day event image ${index + 1}`,
     caption: nursingLawSlideCaptions[index % nursingLawSlideCaptions.length],
+  })),
+  'patient-safety-health-economics-scientific-day': patientSafetyImages.map(({ src }, index) => ({
+    src,
+    alt: `Patient Safety & Health Economics Scientific Day image ${index + 1}`,
+    caption: 'Event highlights',
   })),
   default: [
     {
@@ -70,6 +87,11 @@ export const eventVideos = {
     poster,
     alt: `Nursing Law & Forensic Science Day video ${index + 1}`,
   })),
+  'patient-safety-health-economics-scientific-day': patientSafetyVideos.map(({ src, poster }, index) => ({
+    src,
+    poster,
+    alt: `Patient Safety & Health Economics Scientific Day video ${index + 1}`,
+  })),
 }
 
 export const eventGalleryTeasers = {
@@ -77,11 +99,19 @@ export const eventGalleryTeasers = {
     src,
     alt: `Nursing Law & Forensic Science Day gallery preview ${index + 1}`,
   })),
+  'patient-safety-health-economics-scientific-day': patientSafetyImages.slice(-2).map(({ src }, index) => ({
+    src,
+    alt: `Patient Safety & Health Economics Scientific Day gallery preview ${index + 1}`,
+  })),
 }
 
 export const eventGalleryPhotos = {
   'forensic-nursing-scientific-day': nursingLawImages.map(({ src }, index) => ({
     src,
     alt: `Nursing Law & Forensic Science Day event image ${index + 1}`,
+  })),
+  'patient-safety-health-economics-scientific-day': patientSafetyImages.map(({ src }, index) => ({
+    src,
+    alt: `Patient Safety & Health Economics Scientific Day event image ${index + 1}`,
   })),
 }

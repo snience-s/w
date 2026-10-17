@@ -105,7 +105,7 @@ export default function ProjectDetailPage() {
           <p className="kicker">{t('PROJECT /')} {t(project.status)}</p>
           <h3>{t(project.name)}</h3>
         </div>
-        {projectSlug === 'forensic-nursing-scientific-day' && (
+        {['forensic-nursing-scientific-day', 'world-diabetes-day-event'].includes(projectSlug) && (
           <div className="project-authority-logos" aria-label="Event authorities">
             <img src={ministryLogo} alt="Ministry of Interior emblem" loading="lazy" decoding="async" />
             <img src={medicalServicesLogo} alt="Medical Services Sector emblem" loading="lazy" decoding="async" />
@@ -117,21 +117,22 @@ export default function ProjectDetailPage() {
         <div className="event-info-card event-info-card--feature event-overview-before-highlights">
           <p className="mini-label">EVENT OVERVIEW</p>
           <h4>{project.eventTitle}</h4>
-          <p className="event-subtitle">{project.eventSubtitle}</p>
-          <p className="event-theme">Theme: {project.theme}</p>
+          {project.eventSubtitle && <p className="event-subtitle">{project.eventSubtitle}</p>}
+          {project.eventIntro && <p className="event-paragraph">{project.eventIntro}</p>}
+          {project.theme && <p className="event-theme">Theme: {project.theme}</p>}
           <div className="event-meta-grid">
-            <div>
-              <span>Date</span>
-              <strong>{project.date}</strong>
-            </div>
-            <div>
-              <span>Venue</span>
-              <strong>{project.venue}</strong>
-            </div>
-            <div>
-              <span>Presented by</span>
-              <strong>{project.presentedBy}</strong>
-            </div>
+            {project.date && <div><span>Date</span><strong>{project.date}</strong></div>}
+            {project.venue && <div><span>Venue</span><strong>{project.venue}</strong></div>}
+            {project.city && <div><span>City</span><strong>{project.city}</strong></div>}
+            {(project.organizer || project.presentedBy) && (
+              <div>
+                <span>{project.organizer ? 'Organizer' : 'Presented by'}</span>
+                <strong>{project.organizer ?? project.presentedBy}</strong>
+              </div>
+            )}
+            {project.eventOverview?.map(({ label, value }) => (
+              <div key={label}><span>{label}</span><strong>{value}</strong></div>
+            ))}
           </div>
         </div>
       )}
@@ -177,7 +178,17 @@ export default function ProjectDetailPage() {
         </div>
       </div>
 
-      {projectSlug === 'forensic-nursing-scientific-day' && (
+      {(galleryPhotos.length > 0 || videos.length > 0) && (
+        <section className="event-media-overview">
+          <div className="section-heading">
+            <p className="kicker">MEDIA</p>
+            <h3>Event Photos &amp; Videos</h3>
+            <p>{project.mediaDescription ?? 'Explore highlights and moments from the event through the photo and video collection.'}</p>
+          </div>
+        </section>
+      )}
+
+      {galleryPhotos.length > 0 && (
         <div className="event-gallery-shortcuts" aria-label="Open event photo gallery">
           <button
             type="button"
@@ -216,7 +227,7 @@ export default function ProjectDetailPage() {
         </div>
       )}
 
-      {projectSlug === 'forensic-nursing-scientific-day' && (
+      {videos.length > 0 && (
         <section className="event-videos" aria-labelledby="event-videos-title">
           <div className="event-highlights-header">
             <p className="kicker" id="event-videos-title">Event Videos</p>
@@ -243,88 +254,141 @@ export default function ProjectDetailPage() {
           </div>
 
           <div className="event-video-viewport">
-            {videos.length > 0 ? (
-              <div
-                className="event-video-track"
-                style={{ transform: `translateX(-${activeVideo * 100}%)` }}
-              >
-                {videos.map((video, index) => (
-                  <div className="event-video-slide" key={video.src}>
-                    <LazyEventVideo video={video} isActive={index === activeVideo} />
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="event-video-empty">
-                <span className="event-video-empty-icon" aria-hidden="true">▶</span>
-                <p>Video highlights will be added here</p>
-              </div>
-            )}
+            <div
+              className="event-video-track"
+              style={{ transform: `translateX(-${activeVideo * 100}%)` }}
+            >
+              {videos.map((video, index) => (
+                <div className="event-video-slide" key={video.src}>
+                  <LazyEventVideo video={video} isActive={index === activeVideo} />
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       )}
 
       {hasExtendedEventInfo && (
         <div className="event-info-layout">
-          <div className="event-info-card">
-            <p className="mini-label">ABOUT THE EVENT</p>
-            {project.about.map((paragraph) => (
-              <p key={paragraph} className="event-paragraph">{paragraph}</p>
-            ))}
-          </div>
-
-          <div className="event-info-card event-info-card--full">
-            <p className="mini-label">SCIENTIFIC PROGRAM</p>
-            <div className="event-program-list">
-              {project.program.map((item) => (
-                <div key={`${item.time}-${item.title}`} className="event-program-item">
-                  <div className="event-program-time">{item.time}</div>
-                  <div className="event-program-copy">
-                    <h5>{item.title}</h5>
-                    {item.speaker && item.speaker !== '-' && <p className="event-speaker">{item.speaker}</p>}
-                    {item.description && <p>{item.description}</p>}
-                  </div>
-                </div>
+          {project.about?.length > 0 && (
+            <div className="event-info-card">
+              <p className="mini-label">ABOUT THE EVENT</p>
+              {project.about.map((paragraph) => (
+                <p key={paragraph} className="event-paragraph">{paragraph}</p>
               ))}
             </div>
-          </div>
+          )}
 
-          <div className="event-info-card">
-            <p className="mini-label">EVENT MANAGEMENT & EXECUTION</p>
-            <ul className="event-list">
-              {project.execution.map((point) => (
-                <li key={point}>{point}</li>
-              ))}
-            </ul>
-          </div>
+          {project.mission && (
+            <div className="event-info-card">
+              <p className="mini-label">OUR MISSION</p>
+              <p className="event-paragraph">{project.mission}</p>
+            </div>
+          )}
 
-          <div className="event-info-card">
-            <p className="mini-label">CONFERENCE MATERIALS & GIVEAWAYS</p>
-            <ul className="event-list">
-              {project.materials.map((point) => (
-                <li key={point}>{point}</li>
-              ))}
-            </ul>
-          </div>
+          {project.story?.length > 0 && (
+            <div className="event-info-card event-info-card--full">
+              <p className="mini-label">THE HEARTPRINT STORY</p>
+              <ul className="event-list">
+                {project.story.map(({ label, description }) => (
+                  <li key={label}><strong>{label}:</strong> {description}</li>
+                ))}
+              </ul>
+            </div>
+          )}
 
-          <div className="event-info-card">
-            <p className="mini-label">EVENT BRANDING</p>
-            <p className="event-paragraph">{project.branding}</p>
-          </div>
+          {project.closingMessage && (
+            <div className="event-info-card event-info-card--full">
+              <p className="mini-label">{project.eventSubtitle}</p>
+              <p className="event-paragraph">{project.closingMessage}</p>
+            </div>
+          )}
 
-          <div className="event-info-card">
-            <p className="mini-label">PHOTOGRAPHY & VIDEOGRAPHY</p>
-            <p className="event-paragraph">{project.photography}</p>
-          </div>
+          {project.program?.length > 0 && (
+            <div className="event-info-card event-info-card--full">
+              <p className="mini-label">SCIENTIFIC PROGRAM</p>
+              <div className="event-program-list">
+                {project.program.map((item) => (
+                  <div key={`${item.time}-${item.title}`} className="event-program-item">
+                    <div className="event-program-time">{item.time}</div>
+                    <div className="event-program-copy">
+                      <h5>{item.title}</h5>
+                      {item.speaker && item.speaker !== '-' && <p className="event-speaker">{item.speaker}</p>}
+                      {item.description && <p>{item.description}</p>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
-          <div className="event-info-card event-info-card--full">
-            <p className="mini-label">EVENT GALLERY</p>
-            <ul className="event-gallery-list">
-              {project.gallery.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </div>
+          {project.highlights?.length > 0 && (
+            <div className="event-info-card">
+              <p className="mini-label">EVENT HIGHLIGHTS</p>
+              <ul className="event-list">
+                {project.highlights.map((point) => <li key={point}>{point}</li>)}
+              </ul>
+            </div>
+          )}
+
+          {project.scientificThemes?.length > 0 && (
+            <div className="event-info-card event-info-card--full">
+              <p className="mini-label">SCIENTIFIC THEMES</p>
+              <ul className="event-list">
+                {project.scientificThemes.map((theme) => <li key={theme}>{theme}</li>)}
+              </ul>
+              {project.programmeNote && <p className="event-paragraph">{project.programmeNote}</p>}
+            </div>
+          )}
+
+          {project.registration && (
+            <div className="event-info-card">
+              <p className="mini-label">REGISTRATION</p>
+              <p className="event-paragraph">{project.registration.title}</p>
+              <a href={`mailto:${project.registration.email}`}>{project.registration.email}</a>
+            </div>
+          )}
+
+          {project.execution?.length > 0 && (
+            <div className="event-info-card">
+              <p className="mini-label">EVENT MANAGEMENT & EXECUTION</p>
+              <ul className="event-list">
+                {project.execution.map((point) => <li key={point}>{point}</li>)}
+              </ul>
+            </div>
+          )}
+
+          {project.materials?.length > 0 && (
+            <div className="event-info-card">
+              <p className="mini-label">CONFERENCE MATERIALS & GIVEAWAYS</p>
+              <ul className="event-list">
+                {project.materials.map((point) => <li key={point}>{point}</li>)}
+              </ul>
+            </div>
+          )}
+
+          {project.branding && (
+            <div className="event-info-card">
+              <p className="mini-label">EVENT BRANDING</p>
+              <p className="event-paragraph">{project.branding}</p>
+            </div>
+          )}
+
+          {project.photography && (
+            <div className="event-info-card">
+              <p className="mini-label">PHOTOGRAPHY & VIDEOGRAPHY</p>
+              <p className="event-paragraph">{project.photography}</p>
+            </div>
+          )}
+
+          {project.gallery?.length > 0 && (
+            <div className="event-info-card event-info-card--full">
+              <p className="mini-label">EVENT GALLERY</p>
+              <ul className="event-gallery-list">
+                {project.gallery.map((item) => <li key={item}>{item}</li>)}
+              </ul>
+            </div>
+          )}
         </div>
       )}
 

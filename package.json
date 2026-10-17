@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
-    "lint": "eslint src --ext js,jsx --max-warnings 0"
+    "lint": "eslint App.jsx main.jsx i18n.jsx components pages data vite.config.js --ext .js,.jsx --max-warnings 0"
   },
   "dependencies": {
     "@react-three/drei": "^9.122.0",

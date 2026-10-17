@@ -4,6 +4,10 @@ import forensicNursingCover from '../assets/aas/WhatsApp Image 2026-10-07 at 11.
 import jowanaImage from '../assets/jowana/jowana-almalky.jpeg'
 import hayaImage from '../assets/haya/haya-tamer.jpeg'
 import meiraImage from '../assets/meira/meira-tamer.jpeg'
+import patientSafetyCover from '../assets/pshe/b8a924f9-2922-44e0-ada6-8885a7fd1cf2.jpg'
+import womensHealthSummitCover from '../assets/whs/WhatsApp Image 2026-09-25 at 5.11.07 PM.jpeg'
+import worldDiabetesDayCover from '../assets/wdd/WhatsApp Image 2026-10-13 at 6.18.14 PM.jpeg'
+import heartprintCover from '../assets/H-d/WhatsApp Image 2026-10-17 at 5.09.56 AM.jpeg'
 
 export const navItems = [
   { label: 'Home', to: '/' },
@@ -156,29 +160,119 @@ export const projectPillars = [
     slug: 'patient-safety-health-economics-scientific-day',
     status: 'COMPLETED',
     name: 'Patient Safety & Health Economics Scientific Day',
-    label: 'Scientific Day',
-    image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80',
+    label: 'Scientific Events',
+    image: patientSafetyCover,
+    eventTitle: 'Patient Safety & Health Economics Scientific Day',
+    eventSubtitle: 'Scientific Day',
+    date: 'September 12, 2026',
+    venue: 'Police Hospital – Nasr City',
+    city: 'Cairo, Egypt',
+    organizer: 'Science Event Management',
+    about: [
+      'A Scientific Day dedicated to Health Economics and Patient Safety, highlighting the importance of healthcare efficiency, patient-centered care, and continuous improvement in healthcare quality and safety.',
+      'The event focused on the role of health economics in supporting informed healthcare decisions, optimizing resource utilization, and promoting sustainable healthcare delivery, alongside the importance of patient safety in improving clinical outcomes and quality of care.',
+    ],
+    highlights: [
+      'Health Economics',
+      'Patient Safety',
+      'Healthcare Quality Improvement',
+      'Efficient Healthcare Resource Utilization',
+      'Sustainable Healthcare Delivery',
+    ],
+    mediaDescription: 'Explore highlights and moments from the scientific event through the photo and video collection.',
   },
   {
     slug: 'egypt-womens-health-summit',
     status: 'UPCOMING',
     name: 'Egypt Women\'s Health Summit',
     label: 'Lifeline concept',
-    image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80',
+    image: womensHealthSummitCover,
   },
   {
     slug: 'world-diabetes-day-event',
     status: 'UPCOMING',
-    name: 'World Diabetes Day Event',
-    label: 'Event planning concept',
-    image: 'https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=900&q=80',
+    name: 'World Diabetes Day – Diabetes in Focus',
+    label: 'Internal Medicine Scientific Conference',
+    image: worldDiabetesDayCover,
+    eventTitle: 'World Diabetes Day – Diabetes in Focus',
+    about: [
+      'A scientific meeting for the questions shaping diabetes care in internal medicine.',
+      'World Diabetes Day – Diabetes in Focus brings together the scientific community to explore advances in diabetes prevention, evolving treatment strategies, and the management of cardiovascular, renal, metabolic, and other diabetes-related complications.',
+      'The conference aims to support scientific exchange and promote a deeper understanding of contemporary approaches to diabetes care and its associated complications.',
+    ],
+    eventOverview: [
+      { label: 'Event Category', value: 'Medical & Scientific Conferences' },
+      { label: 'Event Type', value: 'Internal Medicine Scientific Conference' },
+      { label: 'Event Title', value: 'World Diabetes Day – Diabetes in Focus' },
+      { label: 'Date', value: 'November 15, 2026' },
+      { label: 'Venue', value: 'Semiramis InterContinental Cairo' },
+      { label: 'Location', value: 'Cairo, Egypt' },
+      { label: 'Event Organizer', value: 'Science Event Management' },
+      { label: 'Under the Patronage of', value: 'Police Medical Services Sector, Ministry of Interior Affairs' },
+      { label: 'Scientific Partner', value: 'AASD' },
+    ],
+    scientificThemes: [
+      'Diabetes Prevention and Risk Reduction',
+      'Advances in Diabetes Management',
+      'Insulin Therapy',
+      'SGLT2 Inhibitors',
+      'GLP-1 Receptor Agonists',
+      'Diabetes and Cardiovascular Disease',
+      'Diabetes and Kidney Disease',
+      'Diabetic Dyslipidemia',
+      'Hypertension in Patients with Diabetes',
+      'Diabetic Neuropathy',
+      'Diabetic Retinopathy',
+      'Diabetic Foot Care',
+      'Obesity and Diabetes',
+      'Emerging Diabetes Therapies',
+      'Comprehensive and Integrated Diabetes Care',
+    ],
+    programmeNote: 'Scientific themes are subject to programme development.',
+    registration: {
+      title: 'Attendee Registration & Sponsorship Inquiries',
+      email: 'wdd-egy@elmawy.com',
+    },
   },
   {
     slug: 'glaucoma-scientific-session',
-    status: 'UPCOMING',
-    name: 'Glaucoma Scientific Session',
-    label: 'Session experience',
-    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80',
+    status: 'COMPLETED',
+    name: 'HEARTPRINT',
+    label: 'Humanitarian & Awareness Initiative',
+    image: heartprintCover,
+    eventTitle: 'HEARTPRINT',
+    eventSubtitle: 'A Doctor’s Touch. A Lasting Impact.',
+    eventIntro: 'Every doctor leaves a mark. Every patient’s heart holds a story.',
+    theme: 'Heart Health & The Human Connection in Healthcare',
+    about: [
+      'HEARTPRINT is a humanitarian and awareness initiative celebrating heart health and highlighting the lasting impact doctors have on their patients’ lives.',
+      'The fingerprint symbolizes the doctor, while the heart represents the patient. Together, they tell a story of care, compassion, and hope — reflecting the powerful human connection at the heart of every patient’s journey.',
+      'With Prof. Gamal Shaaban and through Green Heart Hospital, HEARTPRINT brings people together through awareness sessions, conversations, and activities that promote heart health and celebrate the human stories behind every patient.',
+    ],
+    mission: 'To raise awareness about heart health, highlight the human side of medical care, and celebrate the positive impact of compassion, attention, and hope in every patient’s journey.',
+    story: [
+      {
+        label: 'The Fingerprint',
+        description: 'Represents the doctor and the unique mark they leave on every life they touch.',
+      },
+      {
+        label: 'The Heart',
+        description: 'Represents the patient, their personal journey, and their story.',
+      },
+      {
+        label: 'The Lasting Impact',
+        description: 'Reflects the care, compassion, and hope that connect doctors and patients.',
+      },
+    ],
+    closingMessage: 'Every fingerprint tells a story. Every heart holds a life.',
+    eventOverview: [
+      { label: 'Event Name', value: 'HEARTPRINT' },
+      { label: 'Theme', value: 'Heart Health & The Human Connection in Healthcare' },
+      { label: 'Featured Medical Figure', value: 'Prof. Gamal Shaaban' },
+      { label: 'Associated Institution', value: 'Green Heart Hospital' },
+      { label: 'Activities', value: 'Awareness sessions, conversations, and community activities' },
+      { label: 'Core Message', value: 'A Doctor’s Touch. A Lasting Impact.' },
+    ],
   },
   {
     slug: 'neurology-scientific-session',
@@ -359,7 +453,7 @@ export const meiraProfile = {
 
 export const contactInfo = [
   { label: 'Email', value: 'science@elmawy.com', href: 'mailto:science@elmawy.com' },
-  { label: 'Phone', value: '+20 109 582 8282 / +20 114 759 9444', href: 'tel:+201095828282' },
+  { label: 'Phone', value: '+20 109 582 8282 / +201020180180', href: 'tel:+201095828282' },
   { label: 'Facebook', value: 'facebook.com/science.events', href: 'https://www.facebook.com/profile.php?id=61593490812620' },
   { label: 'Instagram', value: '@science.eventseg', href: 'https://www.instagram.com/science.eventseg/' },
   { label: 'WhatsApp', value: '+20 109 582 8282', href: 'https://wa.me/201095828282' },
