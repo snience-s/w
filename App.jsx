@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Route, Routes, useLocation } from 'react-router'
-import { ayaProfile, contactInfo, hayaProfile, jowanaProfile, meiraProfile, navItems } from './data/siteData'
+import { ayaProfile, contactInfo, hayaProfile, jowanaProfile, meiraProfile, navItems, rashaProfile } from './data/siteData'
 import { useLanguage } from './i18n'
 import ScienceWordmark from './components/ScienceWordmark'
 
@@ -168,6 +168,7 @@ function App() {
             <Route path="/team/jowana-almalky" element={<FounderPage profile={jowanaProfile} />} />
             <Route path="/team/haya-tamer" element={<FounderPage profile={hayaProfile} />} />
             <Route path="/team/dr-meira-tamer" element={<FounderPage profile={meiraProfile} />} />
+            <Route path="/team/dr-rasha-sayed-abd-elsalam" element={<FounderPage profile={rashaProfile} />} />
             <Route path="/team/:teamSlug" element={<TeamRolePage />} />
             <Route path="/social.html" element={<SocialLinksPage />} />
             <Route path="/social" element={<SocialLinksPage />} />

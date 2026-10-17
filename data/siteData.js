@@ -4,6 +4,7 @@ import forensicNursingCover from '../assets/aas/WhatsApp Image 2026-10-07 at 11.
 import jowanaImage from '../assets/jowana/jowana-almalky.jpeg'
 import hayaImage from '../assets/haya/haya-tamer.jpeg'
 import meiraImage from '../assets/meira/meira-tamer.jpeg'
+import rashaImage from '../assets/rasha/WhatsApp Image 2026-10-17 at 5.14.47 PM (1).jpeg'
 import patientSafetyCover from '../assets/pshe/b8a924f9-2922-44e0-ada6-8885a7fd1cf2.jpg'
 import womensHealthSummitCover from '../assets/whs/WhatsApp Image 2026-09-25 at 5.11.07 PM.jpeg'
 import worldDiabetesDayCover from '../assets/wdd/WhatsApp Image 2026-10-13 at 6.18.14 PM.jpeg'
@@ -406,11 +407,11 @@ export const founderProfile = {
   slug: 'osama-elmawy',
   image: founderImage,
   name: 'Osama Elmawy',
-  position: 'Founder & Chairman',
+  position: 'Founder & CEO',
   statement: 'Building with purpose. Leading with passion. Turning bold ideas into lasting success.',
   vision: 'The vision behind SCIENCE is built on purpose, passion, and the belief that bold ideas can be transformed into lasting success.',
-  account: 'science.eventseg',
-  accountUrl: 'https://www.instagram.com/science.eventseg/',
+  account: 'osama.science@elmawy.com',
+  accountUrl: 'mailto:osama.science@elmawy.com',
   brand: 'SCIENCE Event Management',
 }
 
@@ -449,6 +450,14 @@ export const meiraProfile = {
   statement: 'Transforming complex medical knowledge into clear, accurate, and engaging content that informs, inspires, and connects.',
   postHeadline: 'Meet the mind behind meaningful medical content',
   tagline: 'THE MEDICAL VOICE',
+}
+
+export const rashaProfile = {
+  slug: 'dr-rasha-sayed-abd-elsalam',
+  image: rashaImage,
+  name: 'DR. RASHA SAYED ABD-ELSALAM',
+  position: 'Sponsorship Manager & Medical Sponsorship Lead at SCIENCE',
+  statement: 'Building strong partnerships for impactful medical events.',
 }
 
 export const contactInfo = [

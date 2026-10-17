@@ -27,7 +27,7 @@ export default function FounderPage({ profile = founderProfile }) {
           className="team-detail-image founder-detail-image"
           role="img"
           aria-label={t(profile.name)}
-          style={{ backgroundImage: `linear-gradient(180deg, rgba(10, 15, 22, 0.08), rgba(7, 11, 18, 0.24)), url(${profile.image})` }}
+          style={{ backgroundImage: `linear-gradient(180deg, rgba(10, 15, 22, 0.08), rgba(7, 11, 18, 0.24)), url("${profile.image}")` }}
         />
         <article className="page-panel page-panel--feature team-detail-copy">
           <p className="mini-label">{t(profile.position)}</p>

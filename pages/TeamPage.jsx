@@ -1,5 +1,5 @@
 import { Link } from 'react-router'
-import { ayaProfile, founderProfile, hayaProfile, jowanaProfile, meiraProfile, teamProfiles } from '../data/siteData'
+import { ayaProfile, founderProfile, hayaProfile, jowanaProfile, meiraProfile, rashaProfile, teamProfiles } from '../data/siteData'
 import { useLanguage } from '../i18n'
 
 export default function TeamPage() {
@@ -13,7 +13,7 @@ export default function TeamPage() {
       </div>
 
       <div className="team-grid">
-        {[founderProfile, ayaProfile, jowanaProfile, hayaProfile, meiraProfile].map((profile) => (
+        {[founderProfile, ayaProfile, jowanaProfile, hayaProfile, meiraProfile, rashaProfile].map((profile) => (
           <Link
             key={profile.slug}
             className="team-card team-page-card person-card"
@@ -24,7 +24,7 @@ export default function TeamPage() {
               className="team-avatar"
               role="img"
               aria-label={t(profile.name)}
-              style={{ backgroundImage: `linear-gradient(180deg, rgba(10, 15, 22, 0.12), rgba(7, 11, 18, 0.28)), url(${profile.image})` }}
+              style={{ backgroundImage: `linear-gradient(180deg, rgba(10, 15, 22, 0.12), rgba(7, 11, 18, 0.28)), url("${profile.image}")` }}
             />
             <div className="team-card-copy">
               <h4>{t(profile.name)}</h4>
@@ -40,7 +40,7 @@ export default function TeamPage() {
             <div
               className="team-avatar"
               aria-hidden="true"
-              style={{ backgroundImage: `linear-gradient(180deg, rgba(10, 15, 22, 0.2), rgba(7, 11, 18, 0.5)), url(${profile.image})` }}
+              style={{ backgroundImage: `linear-gradient(180deg, rgba(10, 15, 22, 0.2), rgba(7, 11, 18, 0.5)), url("${profile.image}")` }}
             />
             <div className="team-card-copy">
               <h4>{t(profile.label)}</h4>

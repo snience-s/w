@@ -48,7 +48,11 @@ export default function ContactPage() {
             rel={item.href.startsWith('https://') ? 'noreferrer' : undefined}
           >
             <span>{t(item.label)}</span>
-            <p>{item.value}</p>
+            <p>
+              {['Phone', 'WhatsApp'].includes(item.label) ? (
+                <bdi dir="ltr">{item.value}</bdi>
+              ) : item.value}
+            </p>
           </a>
         ))}
       </div>

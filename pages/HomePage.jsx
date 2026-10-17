@@ -13,6 +13,7 @@ import {
   jowanaProfile,
   meiraProfile,
   projectPillars,
+  rashaProfile,
   services,
 } from '../data/siteData'
 import { useLanguage } from '../i18n'
@@ -115,7 +116,7 @@ export default function HomePage() {
         </div>
 
         <div className="team-grid">
-          {[founderProfile, ayaProfile, jowanaProfile, hayaProfile, meiraProfile].map((profile) => (
+          {[founderProfile, ayaProfile, jowanaProfile, hayaProfile, meiraProfile, rashaProfile].map((profile) => (
             <Link
               key={profile.slug}
               className="team-card person-card"
@@ -208,7 +209,11 @@ export default function HomePage() {
                   target={item.href.startsWith('https://') ? '_blank' : undefined}
                   rel={item.href.startsWith('https://') ? 'noreferrer' : undefined}
                 >
-                  <strong>{item.value}</strong>
+                  <strong>
+                    {['Phone', 'WhatsApp'].includes(item.label) ? (
+                      <bdi dir="ltr">{item.value}</bdi>
+                    ) : item.value}
+                  </strong>
                 </a>
               ) : (
                 <strong>{item.value}</strong>
